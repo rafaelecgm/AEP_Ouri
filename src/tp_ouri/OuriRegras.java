@@ -1,27 +1,25 @@
-package com.test.mancala.build;
+package tp_ouri;
 
 public class OuriRegras
 {
 	
-	public static void printGameRules()
+	public static void exibirRegasDoJogo()
 	{
-		System.out.println("\t\t*************************************");
-		System.out.println("\t\t   WELCOME TO MANCALA PLAY BOARD!    ");
-		System.out.println("\t\t*************************************");
-		System.out.println("Game Rule.....");
-		System.out.println("\t1 : Minimum Pits Which you can select is 1 and Max is 6. ");
-		System.out.println("\t2 : Every Player has to play this game anticlockwise.");
-		System.out.println("\t\t2.1 : For Player 2/Auto Player : Right to Left ( Pits can be seen as on board 1->2->3->4->5->6 ). ");
-		System.out.println("\t\t2.2 : For Player 1             : Left to Right ( Pits can be seen as on board 1->2->3->4->5->6 ). ");
-
-		System.out.println("\t3 : In a display console, Pits which called ( Mancala ) sown as 'O', Doesn't consider as your Pits.");
-		System.out.println("\t4 : Don't provide Character or any special symbol, While providing Input from console.");
-		System.out.println("\t5 : To Get More user experience Time delay has been introduce ( SECONDS=1 ) between each move.");
-		System.out.println("\t6 : Always Think Three moves Ahead....!!!");
+		System.out.println("\t\t-------------------------------------");
+		System.out.println("\t\t   Bem vindo ao Ouri    ");
+		System.out.println("\t\t------------------------------------");
+		System.out.println("Regras do Jogo");
+		System.out.println("\t1 : Os recepientes podem ser selecionados no m�nimo 1 e no m�ximo 6 ");
+		System.out.println("\t2 : Todo jogador precisa jogar este jogo no sentido anti-hor�rio.");
+		System.out.println("\t\t2.1 : Para o Jogador 2: da direita para a esquerda (os recepientes podem ser vistos como  1-> 2-> 3-> 4-> 5-> 6). ");
+		System.out.println("\t\t2.2 : Para o jogador 1: da esquerda para a direita (os recepientes podem ser vistos como 1-> 2-> 3-> 4-> 5-> 6). ");
+		System.out.println("\t3 : No console de exibiÇÃo, as sementes semeadas como 'O' n�o s�o considerados seus recepientes.");
+		System.out.println("\t4 : N�o introduza caractere ou qualquer s�mbolo especial, ao fornecer entrada do console.");
+		System.out.println("\t5 : Para obter mais experi�ncia do utilizador, o atraso de tempo que for colocada a semsente (Segundo = 1) entre cada movimento.");
+		System.out.println("\t6 : Pense sempre em tr�s movimentos � frente!!!");
 		System.out.println("");
-		System.out.println("Mancala dashboard will appear very soon... Enjoy the game... ");
-		System.out.println("___________________________________________________________________");
-		
+		System.out.println("O painel do jogo Ouri aparecer� em breve... Aproveite o jogo... ");
+		System.out.println("----------------------------------------------------------------");
     }
 
 	

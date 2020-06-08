@@ -9,41 +9,17 @@ import org.testng.annotations.Test;
 public class Verificar {
 	
 	@Test
-	  public void callMethodMancalaRule() {
+	  public void chamarMetodoDeRegras() {
 	
-		  OuriRegras.printGameRules();
+		  OuriRegras.exibirRegasDoJogo();
 	  }
 	  @Test
-	  public void callPlayMancalaWithComputer() throws IOException {
+	  public void chamarJogoContraComputador() throws IOException {
 		
-		  PlayAndBuildMancalaGame playGameMancals = new PlayAndBuildMancalaGame(null, null,"Y");
-		  playGameMancals.playMancala();
-	  }
-	  /*@Test
-	  public void callPlayMancalaWithComputerComputer() throws IOException {
-		
-		  PlayAndBuildMancalaGame playGameMancals = new PlayAndBuildMancalaGame("Shashi", null,"Y");
-		  playGameMancals.playMancala();
-	  }
-	  @Test
-	  public void callPlayMancalaWithHuman() throws IOException {
-		
-		  PlayAndBuildMancalaGame playGameMancals = new PlayAndBuildMancalaGame("Shashi", "Aryan","Y");
-		  playGameMancals.playMancala();
+		  jogadorAtual jogarOuriGame = new jogadorAtual(null, null,"S");
+		  jogarOuriGame.jogarOuri();
 	  }
 	  
-	  @Test
-	  public void callPlayMancalaWithHumanWithSuffle() throws IOException {
-		
-		  PlayAndBuildMancalaGame playGameMancals = new PlayAndBuildMancalaGame("Shashi", "Aryan","Y");
-		  playGameMancals.playMancala();
-	  }
-	  @Test
-	  public void callPlayMancalaWithHumanWithoutSuffle() throws IOException {
-		
-		  PlayAndBuildMancalaGame playGameMancals = new PlayAndBuildMancalaGame("Shashi", "Aryan","N");
-		  playGameMancals.playMancala();
-	  }*/
 	  @BeforeTest
 	  public void beforeTest() {
 	  }

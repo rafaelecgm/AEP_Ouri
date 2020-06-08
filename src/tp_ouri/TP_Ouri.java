@@ -1,10 +1,4 @@
-/**
- * 
- */
-/**
- * @Author shasisingh
- * Game Rule: https://www.thesprucecrafts.com/how-to-play-mancala-409424
- */
+
 package tp_ouri;
 
 import java.io.*;
@@ -14,58 +8,41 @@ import java.util.concurrent.TimeUnit;
 
 
 
-class PlayAndBuildMancalaGame 
+class jogadorAtual 
 {
-	int currentMancalaPlayer = 0;
-	ManageMancalaBoard mancalaBoard;
-	MancalaPlayersProfile[] playersListByName;
-	int boardReshuffleInArray=0;
+	int jogadorAtual = 0;
+	GerenciarTabuleiro ouriTabuleiro;
+	PerfilJogador[] listaJogadoresPorNome;
+	int arrayReorganizarTabuleiro=0;
 
-	/**
-	 * @param args
-	 * @throws IOException
-	 */
+	
 	public static void main(String[] args) throws IOException 
 	{
 
-		/*
-		 * Make a note: Class PlayAndBuildMancalaGame took 2 arguments ( player name 1 and player name 2)
-		 * If the user doesn't provide Player name 2 make sure it will be used as null or not provided. eg.. null
-		 * Once null is provided Code determined the second player as a computer.
-		 */
+		
 
-		/*
-		 *  Human Player vs Human Player
-		 */
-
-		//PlayAndBuildMancalaGame playGameMancals = new PlayAndBuildMancalaGame("Shashi As Player 1", "Aryan as Player 2","Y");
-
-		/*
-		 * 	Real Player vs Robbet
-		 */
-
-		OuriRegras.printGameRules();
-		PlayAndBuildMancalaGame playGameMancals = new PlayAndBuildMancalaGame("Shashi", null,"Y");
-		playGameMancals.playMancala();
+		OuriRegras.exibirRegasDoJogo();
+		jogadorAtual jogarOuriGame = new jogadorAtual("Rafael", null,"S");
+		jogarOuriGame.jogarOuri();
 	}
 
 	/**
-	 * @param firstPlayerName
-	 * @param secondPlayerName
+	 * @param nomePrimeiroJogador
+	 * @param nomeSegundoJogador
 	 */
-	PlayAndBuildMancalaGame(String firstPlayerName, String secondPlayerName,String boardReshuffle) 
+	jogadorAtual(String nomePrimeiroJogador, String nomeSegundoJogador,String realinharTabuleiro) 
 	{
 
-		mancalaBoard = new ManageMancalaBoard();
-		mancalaBoard.initialSetUpForPlay();
-		playersListByName = new MancalaPlayersProfile[2];
+		ouriTabuleiro = new GerenciarTabuleiro();
+		ouriTabuleiro.configuracaoInicialParaJogar();
+		listaJogadoresPorNome = new PerfilJogador[2];
 
-		// If you want to change the player isARealPlayername,Have a look into Main Method
-		// If user not passed second player isARealPlayername,It will be used as Computer Player
+		// If you want to change the jogador eONomeDoJogador,Have a look into Main Method
+		// If user not passed second jogador eONomeDoJogador,It will be used as Computer Player
 
-		playersListByName[0] = new MancalaPlayersProfile(firstPlayerName, 0);
-		playersListByName[1] = new MancalaPlayersProfile(secondPlayerName, 1);
-		currentMancalaPlayer = 0;
+		listaJogadoresPorNome[0] = new PerfilJogador(nomePrimeiroJogador, 0);
+		listaJogadoresPorNome[1] = new PerfilJogador(nomeSegundoJogador, 1);
+		jogadorAtual = 0;
 
 		/*
 		 *  board reshuffle is all About: Providing user view, how user play on game board, they always start from Right to Left,
@@ -73,140 +50,140 @@ class PlayAndBuildMancalaGame
 		 *  Internal array movements will be determined based on this. So reshuffle will change user Pits to predefined Pits.
 		 */
 
-		if(boardReshuffle.toUpperCase()=="Y") {
-			boardReshuffleInArray=1;
+		if(realinharTabuleiro.toUpperCase()=="S") {
+			arrayReorganizarTabuleiro=1;
 		}else {
-			boardReshuffleInArray=0;
+			arrayReorganizarTabuleiro=0;
 		}
 	}
 
 	/**
 	 * @throws IOException
 	 */
-	public void playMancala() throws IOException 
+	public void jogarOuri() throws IOException 
 	{
 
-		displayMancalaBoardConsole();
-		while (!mancalaBoard.isGameOver()) 
+		exibirTabuleiroOuri();
+		while (!ouriTabuleiro.fimDeJogo()) 
 		{
-			String playerNamefromArray;
-			if(currentMancalaPlayer==0)
+			String nomeDoJogadorDoArray;
+			if(jogadorAtual==0)
 			{
-				playerNamefromArray=playersListByName[0].getName();	
+				nomeDoJogadorDoArray=listaJogadoresPorNome[0].getNome();	
 			}else {
-				playerNamefromArray=playersListByName[1].getName();	
+				nomeDoJogadorDoArray=listaJogadoresPorNome[1].getNome();	
 			}
 
 			/*
-			 *  Calling Function: selectTheMove to Determine the Move, If users are human then ask for Input at main Console else best move will be determined.
+			 *  Calling Function: selecionarMovimento to Determine the Move, If users are human then ask for Input at main Console else best move will be determined.
 			 */
-			int pitNum=0;
-			int sufflePitNumber = playersListByName[currentMancalaPlayer].selectTheMove(mancalaBoard); 
-			if(boardReshuffleInArray==1) {
-				pitNum=doBoardReshuffle(sufflePitNumber,currentMancalaPlayer);
+			int posicaoNum=0;
+			int misturarNumeroDePosicao = listaJogadoresPorNome[jogadorAtual].selecionarMovimento(ouriTabuleiro); 
+			if(arrayReorganizarTabuleiro==1) {
+				posicaoNum=doMisturarTabuleiro(misturarNumeroDePosicao,jogadorAtual);
 			}else {
-				pitNum=sufflePitNumber;
+				posicaoNum=misturarNumeroDePosicao;
 			}
 			
 				/*
-				 *  Display Over Console, which player moved was along with Changed Mancala Board
+				 *  Display Over Console, which jogador moved was along with Changed Mancala Board
 				 */
 
-			 System.out.println("Player [ " + playerNamefromArray + " ] moved from " + sufflePitNumber);
+			 System.out.println("Jogador [ " + nomeDoJogadorDoArray + " ] moveu de " + misturarNumeroDePosicao);
 
-			//int pitNum = playersListByName[currentMancalaPlayer].selectTheMove(mancalaBoard,currentMancalaPlayer,boardReshuffleInArray); 
+			//int posicaoNum = listaJogadoresPorNome[jogadorAtual].selecionarMovimento(ouriTabuleiro,jogadorAtual,arrayReorganizarTabuleiro); 
 
-			// the move:-->  User Or Computer has Selected there Pits which need to be move , which are store in variable pitNum. 
+			// the move:-->  User Or Computer has Selected there Pits which need to be move , which are store in variable posicaoNum. 
 
 			/*
 			 *  If you run into your own store, deposit one piece in it. If you run into your opponent's store, skip it.
-			 *  If the last piece you drop is in your own store, you get a free turn. ( variable : checkgoAgainCall store those information)
+			 *  If the last piece you drop is in your own store, you get a free turn. ( variable : selecionarIrNovamente store those information)
 			 */
-			boolean checkgoAgainCall = mancalaBoard.doPitsTheMove(currentMancalaPlayer, pitNum);
+			boolean selecionarIrNovamente = ouriTabuleiro.doMovimentoDePosicao(jogadorAtual, posicaoNum);
 
 			/*
-			 *  Display Over Console, which player moved was along with Changed Mancala Board
+			 *  Display Over Console, which jogador moved was along with Changed Mancala Board
 			 */
 
-			displayMancalaBoardConsole();
+			exibirTabuleiroOuri();
 
-			if (!checkgoAgainCall) 
+			if (!selecionarIrNovamente) 
 			{	
-				// If the current player does not go again,switch to the other player
-				if (currentMancalaPlayer == 0) 	
-					currentMancalaPlayer = 1;
+				// If the current jogador does not go again,switch to the other jogador
+				if (jogadorAtual == 0) 	
+					jogadorAtual = 1;
 				else
-					currentMancalaPlayer = 0;
+					jogadorAtual = 0;
 			}else
 			{
 				//If the last piece you drop is in your own Mancala , User get a free turn.
-				System.out.println("Player [ " + playerNamefromArray + " ] goes again");
+				System.out.println("Jogador [ " + nomeDoJogadorDoArray + " ] jogará novamente.");
 			}
 		}
 		/*
 		 * The game ends when all six spaces on one side of the Mancala board are empty.
 		 */
 
-		// Game is over , mancalaBoard empty stones,
-		mancalaBoard.emptyStonesIntoMancalas(); 
+		// Game is over , ouriTabuleiro empty pedras,
+		ouriTabuleiro.semPedrasNoOuri(); 
 
-		// Display final mancalaBoard. 
-		displayMancalaBoardConsole(); 			
+		// Display final ouriTabuleiro. 
+		exibirTabuleiroOuri(); 			
 
 
 		/*
 		 * Below section determined Who is Winner And Winner Award goes to......
 		 */
-		if (mancalaBoard.stonesInMancala(0) > mancalaBoard.stonesInMancala(1)){
-			System.out.println("************* Congratulations..! You Won this Game ******************************");
-			System.out.println(playersListByName[0].getName() + " wins");
+		if (ouriTabuleiro.pedrasNoOuri(0) > ouriTabuleiro.pedrasNoOuri(1)){
+			System.out.println("************* Parabéns..! Venceste o jogo ******************************");
+			System.out.println(listaJogadoresPorNome[0].getNome() + " vitória");
 			System.out.println("*******************************************");
 		}
-		else if (mancalaBoard.stonesInMancala(0) < mancalaBoard.stonesInMancala(1)) {
-			System.out.println("************* Congratulations..! You Won this Game ******************************");
-			System.out.println(playersListByName[1].getName() + " wins");
+		else if (ouriTabuleiro.pedrasNoOuri(0) < ouriTabuleiro.pedrasNoOuri(1)) {
+			System.out.println("************* Parabéns..! Venceste o jogo ******************************");
+			System.out.println(listaJogadoresPorNome[1].getNome() + " vitória");
 			System.out.println("*******************************************");
 		}
 		else {
-			System.out.println("************* If the score of a game is equal, then the game is a tie :) ******************************");
-			System.out.println("Tie");// If this possible for safe side :)
+			System.out.println("************* Se a pontuação do jogo for igual, o jogo será empatado :) ******************************");
+			System.out.println("Empate");// If this possible for safe side :)
 			System.out.println("*******************************************");
 		}
 
 	}
 
 	/**
-	 * @param userInputasPit
-	 * @param currentPlayer
+	 * @param entradaPosicaoUtilizador
+	 * @param jogadorAtual
 	 * @return
 	 */
-	public int doBoardReshuffle(int userInputasPit,int currentPlayer)
+	public int doMisturarTabuleiro(int entradaPosicaoUtilizador,int jogadorAtual)
 	{
-		int newPits = 0;
-		if(currentPlayer==0) {
-			if(userInputasPit==6)
-				newPits= 1;
-			else if(userInputasPit==5)
-				newPits= 2;
-			else if (userInputasPit==4)
-				newPits= 3;
-			else if (userInputasPit==3)
-				newPits= 4;
-			else if (userInputasPit==2)
-				newPits= 5;
-			else if (userInputasPit==1)
-				newPits= 6;
+		int novaPosicao = 0;
+		if(jogadorAtual==0) {
+			if(entradaPosicaoUtilizador==6)
+				novaPosicao= 1;
+			else if(entradaPosicaoUtilizador==5)
+				novaPosicao= 2;
+			else if (entradaPosicaoUtilizador==4)
+				novaPosicao= 3;
+			else if (entradaPosicaoUtilizador==3)
+				novaPosicao= 4;
+			else if (entradaPosicaoUtilizador==2)
+				novaPosicao= 5;
+			else if (entradaPosicaoUtilizador==1)
+				novaPosicao= 6;
 		}else {
-			newPits=userInputasPit;
+			novaPosicao=entradaPosicaoUtilizador;
 		}
-		return newPits;
+		return novaPosicao;
 
 	}
 	/**
 	 * 
 	 */
 
-	private void displayMancalaBoardConsole() 
+	private void exibirTabuleiroOuri() 
 	{
 
 		/*
@@ -230,49 +207,49 @@ class PlayAndBuildMancalaGame
 		}
 
 		System.out.println("\n");
-		String sepraterMancalaLineFiller = ""; 
+		String linhaOuriSeparador = ""; 
 		System.out.println("*************************************");
 		System.out.print("      ");
 
 		//Step 1 : 	Display Player 2 Pits and Player 2 Information
-		for (int i = 1; i <= ManageMancalaBoard.playingPits; i++) 
+		for (int i = 1; i <= GerenciarTabuleiro.jogandoPosicao; i++) 
 		{
-			System.out.print(mancalaBoard.stonesInPit(1, i) + "    ");
-			sepraterMancalaLineFiller += "     ";
+			System.out.print(ouriTabuleiro.pedrasNaPosicao(1, i) + "    ");
+			linhaOuriSeparador += "     ";
 		}
 
 		//	Step 1.1 : 	Player 2 Information
-		displayPlayer(1); 
+		exibirJogador(1); 
 
-		//	Step 2 :  	Display Mancala information Both side. Each player has a store (called a Mancala) to the right side of the Mancala board.
+		//	Step 2 :  	Display Mancala information Both side. Each jogador has a store (called a Mancala) to the right side of the Mancala board.
 
-		System.out.print(mancalaBoard.stonesInMancala(1) + "    "); 
-		System.out.print(sepraterMancalaLineFiller);
-		System.out.println(mancalaBoard.stonesInMancala(0));
+		System.out.print(ouriTabuleiro.pedrasNoOuri(1) + "    "); 
+		System.out.print(linhaOuriSeparador);
+		System.out.println(ouriTabuleiro.pedrasNoOuri(0));
 
 		System.out.print("      ");
 
 		//	Step 3 : 	Display Player 1 Pits and Player 1 Information
-		for (int i = ManageMancalaBoard.playingPits; i >= 1; i--)
-			System.out.print(mancalaBoard.stonesInPit(0, i) + "    "); 
+		for (int i = GerenciarTabuleiro.jogandoPosicao; i >= 1; i--)
+			System.out.print(ouriTabuleiro.pedrasNaPosicao(0, i) + "    "); 
 
 		//	Player 3.1 Information
-		displayPlayer(0); 
+		exibirJogador(0); 
 		System.out.println("*************************************");
 	}
 
 	/**
-	 * @param mancalaPlayerNum
+	 * @param numeroJogadorOuri
 	 */
-	private void displayPlayer(int mancalaPlayerNum) 
+	private void exibirJogador(int numeroJogadorOuri) 
 	{
 		/* 
 		 *  In a Console User turn need to be printed which will indicate ,Who is Who and who is playing.
 		 *  Below section is buld to determine the same
 		 */
 
-		// Check If it this player's turn,
-		if (currentMancalaPlayer == mancalaPlayerNum){  
+		// Check If it this jogador's turn,
+		if (jogadorAtual == numeroJogadorOuri){  
 			System.out.print("            -->> ");        // --> Sign mean User Turn, Active user, Same can be visble in Console screen
 		}else {
 			System.out.print("                 ");       // User is not active , user loose his/her turn, Same can be visble in Console screen
@@ -281,14 +258,14 @@ class PlayAndBuildMancalaGame
 		/*
 		 *  Below section will added to show User/Player Information to Main Console eg.. user name or User Number
 		 */
-		int playerCounter;
-		if(mancalaPlayerNum==0) {
-			playerCounter=1;
+		int jogadorContador;
+		if(numeroJogadorOuri==0) {
+			jogadorContador=1;
 		}else {
-			playerCounter=2;
+			jogadorContador=2;
 		}
 
-		System.out.println("Player " + playerCounter + " ( " + playersListByName[mancalaPlayerNum].getName() + ")");
+		System.out.println("Jogador " + jogadorContador + " ( " + listaJogadoresPorNome[numeroJogadorOuri].getNome() + ")");
 	}
 
 
@@ -297,297 +274,287 @@ class PlayAndBuildMancalaGame
 
 }
 
-/**
- * @author shasisingh
- *
- */
-class ManageMancalaBoard 
+
+class GerenciarTabuleiro 
 {
-	CollectsPit[] pits;
-	static final int playingPits = 6, totalPits = 2 * (playingPits + 1);
+	RecolhePosicao[] posicao;
+	static final int jogandoPosicao = 6, totalPosicao = 2 * (jogandoPosicao + 1);
 
 
-	ManageMancalaBoard() 
+	GerenciarTabuleiro() 
 	{
-		pits = new CollectsPit[totalPits];
-		for (int pitNum = 0; pitNum < totalPits; pitNum++)
-			pits[pitNum] = new CollectsPit();
+		posicao = new RecolhePosicao[totalPosicao];
+		for (int posicaoNum = 0; posicaoNum < totalPosicao; posicaoNum++)
+			posicao[posicaoNum] = new RecolhePosicao();
 	}
 
-	public void initialSetUpForPlay() 
+	public void configuracaoInicialParaJogar() 
 	{
 		/*
 		 *  Add 4 Stones In each Pits ( 4*6=24 )
 		 */
-		for (int pitNum = 0; pitNum < totalPits; pitNum++)
-			if (!isAMancalaCall(pitNum))
-				pits[pitNum].addStones(4);
+		for (int posicaoNum = 0; posicaoNum < totalPosicao; posicaoNum++)
+			if (!eUmaChamadaDoOuri(posicaoNum))
+				posicao[posicaoNum].adicionaPedra(4);
 		/*
 		 *  Any Number of Stones can be added in Pits
 		 */
 	}
 
-	public int stonesInMancala(int playerNum) 
+	public int pedrasNoOuri(int jogadorNum) 
 	{
-		return pits[getMancala(playerNum)].getStones();
+		return posicao[getOuri(jogadorNum)].getPedras();
 	}
 
-	public int stonesInPit(int playerNum, int pitNum) 
+	public int pedrasNaPosicao(int jogadorNum, int posicaoNum) 
 	{
-		return pits[getPitNum(playerNum, pitNum)].getStones();
+		return posicao[getPosicaoNum(jogadorNum, posicaoNum)].getPedras();
 	}
 
-	private int getPitNum(int playerNum, int pitNum) 
+	private int getPosicaoNum(int jogadorNum, int posicaoNum) 
 	{
-		return playerNum * (playingPits + 1) + pitNum;
+		return jogadorNum * (jogandoPosicao + 1) + posicaoNum;
 	}
 
-	private int getMancala(int playerNum) 
+	private int getOuri(int jogadorNum) 
 	{
-		return playerNum * (playingPits + 1);
+		return jogadorNum * (jogandoPosicao + 1);
 	}
 
-	private boolean isAMancalaCall(int pitNum) 
+	private boolean eUmaChamadaDoOuri(int posicaoNum) 
 	{
-		return pitNum % (playingPits + 1) == 0;
+		return posicaoNum % (jogandoPosicao + 1) == 0;
 	}
 
-	public ManageMancalaBoard makeACopyOfMancalaBoard() 
+	public GerenciarTabuleiro fazerUmaCopiaDoTabuleiro() 
 	{
-		ManageMancalaBoard newBoard = new ManageMancalaBoard();
-		for (int pitNum = 0; pitNum < totalPits; pitNum++)
-			newBoard.pits[pitNum].addStones(this.pits[pitNum].getStones());
-		return newBoard;
+		GerenciarTabuleiro novoTabuleiro = new GerenciarTabuleiro();
+		for (int posicaoNum = 0; posicaoNum < totalPosicao; posicaoNum++)
+			novoTabuleiro.posicao[posicaoNum].adicionaPedra(this.posicao[posicaoNum].getPedras());
+		return novoTabuleiro;
 	}
 
 	/**
-	 * @param currentPlayerNum
-	 * @param chosenPitNum
+	 * @param jogadorAtualNum
+	 * @param posicaoEscolhidaNum
 	 * @return
 	 */
-	public boolean doPitsTheMove(int currentPlayerNum, int chosenPitNum) 
+	public boolean doMovimentoDePosicao(int jogadorAtualNum, int posicaoEscolhidaNum) 
 	{
-		boolean isPitesGetCalled=false;
+		boolean posicaoChamada=false;
 		/*
 		 * If the last piece Player drop is in an empty hole on His/her side, Player capture that piece and any pieces in the hole directly opposite.
 		 */
-		int pitNum = getPitNum(currentPlayerNum, chosenPitNum);
-		int stones = pits[pitNum].removeStones();
-		while (stones != 0) 
+		int posicaoNum = getPosicaoNum(jogadorAtualNum, posicaoEscolhidaNum);
+		int pedras = posicao[posicaoNum].removerPedras();
+		while (pedras != 0) 
 		{
-			pitNum--;
-			if (pitNum < 0)
-				pitNum = totalPits - 1;
-			if (pitNum != getMancala(otherPlayerNum(currentPlayerNum))) 
+			posicaoNum--;
+			if (posicaoNum < 0)
+				posicaoNum = totalPosicao - 1;
+			if (posicaoNum != getOuri(outroJogadorNum(jogadorAtualNum))) 
 			{
-				pits[pitNum].addStones(1);
-				stones--;
+				posicao[posicaoNum].adicionaPedra(1);
+				pedras--;
 			}
-			isPitesGetCalled=true;
+			posicaoChamada=true;
 		}
 		
-		if(stones==0 && isPitesGetCalled==false) {
+		if(pedras==0 && posicaoChamada==false) {
 			/*
-			 *  Player Selected Pits which have 0 stones in, So Ask player to goAgain and select again Pits, which value is >0;
+			 *  Player Selected Pits which have 0 pedras in, So Ask jogador to irNovamente and select again Pits, which value is >0;
 			 */
 			System.out.println("**********************************************************************************************************************************************");
-			System.out.println("Warning -> Player [ "+( currentPlayerNum+1)+" ] has selected Pits without any stones in it (Pits=0),So Player has to Go Again and choose Pits from Console.");
+			System.out.println("Cuidado -> Jogador [ "+( jogadorAtualNum+1)+" ] selecionou posição sem pedras (posição = 0), então o jogador precisa ir novamente e escolher posições no tabuleiro.");
 			System.out.println("**********************************************************************************************************************************************");
 			return true;
 		}
 		
-		if (pitNum == getMancala(currentPlayerNum))
+		if (posicaoNum == getOuri(jogadorAtualNum))
 			return true;
-		if (whoIsWho(pitNum) == currentPlayerNum && pits[pitNum].getStones() == 1) 
+		if (quemEquem(posicaoNum) == jogadorAtualNum && posicao[posicaoNum].getPedras() == 1) 
 		{
-			stones = pits[oppositePitNum(pitNum)].removeStones();
-			pits[getMancala(currentPlayerNum)].addStones(stones);
+			pedras = posicao[posicaoJogadorInimigoNum(posicaoNum)].removerPedras();
+			posicao[getOuri(jogadorAtualNum)].adicionaPedra(pedras);
 		}
 		return false;
 	}
 
-	private int whoIsWho(int pitNum) 
+	private int quemEquem(int posicaoNum) 
 	{
-		return pitNum / (playingPits + 1);
+		return posicaoNum / (jogandoPosicao + 1);
 	}
 
-	private int oppositePitNum(int pitNum) 
+	private int posicaoJogadorInimigoNum(int posicaoNum) 
 	{
-		return totalPits - pitNum;
+		return totalPosicao - posicaoNum;
 	}
 
-	private int otherPlayerNum(int playerNum) 
+	private int outroJogadorNum(int jogadorNum) 
 	{
-		if (playerNum == 0)
+		if (jogadorNum == 0)
 			return 1;
 		else
 			return 0;
 	}
 
-	public boolean isGameOver() 
+	public boolean fimDeJogo() 
 	{
-		for (int player = 0; player < 2; player++) 
+		for (int jogador = 0; jogador < 2; jogador++) 
 		{
-			int stones = 0;
-			for (int pitNum = 1; pitNum <= playingPits; pitNum++)
-				stones += pits[getPitNum(player, pitNum)].getStones();
-			if (stones == 0)
+			int pedras = 0;
+			for (int posicaoNum = 1; posicaoNum <= jogandoPosicao; posicaoNum++)
+				pedras += posicao[getPosicaoNum(jogador, posicaoNum)].getPedras();
+			if (pedras == 0)
 				return true;
 		}
 		return false;
 	}
 
-	public void emptyStonesIntoMancalas() 
+	public void semPedrasNoOuri() 
 	{
-		for (int player = 0; player < 2; player++)
-			for (int pitNum = 0; pitNum <= playingPits; pitNum++) 
+		for (int jogador = 0; jogador < 2; jogador++)
+			for (int posicaoNum = 0; posicaoNum <= jogandoPosicao; posicaoNum++) 
 			{
-				int stones = pits[getPitNum(player, pitNum)].removeStones();
-				pits[getMancala(player)].addStones(stones);
+				int pedras = posicao[getPosicaoNum(jogador, posicaoNum)].removerPedras();
+				posicao[getOuri(jogador)].adicionaPedra(pedras);
 			}
 	}
 
 
 }
 
-/**
- * @author shasisingh
- *
- */
-class CollectsPit 
+
+class RecolhePosicao 
 {
-	int stones;
+	int pedras;
 	
-	CollectsPit() 
+	RecolhePosicao() 
 	{
-		this.stones = 0;
+		this.pedras = 0;
 	}
 
-	public int getStones() 
+	public int getPedras() 
 	{
-		return stones;
+		return pedras;
 	}
 
-	public void addStones(int stones) 
+	public void adicionaPedra(int pedras) 
 	{
-		this.stones += stones;
+		this.pedras += pedras;
 	}
 
-	public int removeStones() {
-		int stones = this.stones;
-		this.stones = 0;
-		return stones;
+	public int removerPedras() {
+		int pedras = this.pedras;
+		this.pedras = 0;
+		return pedras;
 	}
 
 	
 }
 
-/**
- * @author shasisingh
- *
- */
-class MancalaPlayersProfile 
+class PerfilJogador 
 {
-	String isARealPlayername;
-	int mancalaPlayerNum;
-	MancalaPlayersProfile(String name, int playerNum) 
+	String eONomeDoJogador;
+	int jogadorOuriNum;
+	PerfilJogador(String nome, int jogadorNum) 
 	{
-		this.isARealPlayername = name;
-		this.mancalaPlayerNum = playerNum;
+		this.eONomeDoJogador = nome;
+		this.jogadorOuriNum = jogadorNum;
 	}
 
-	public String getName() 
+	public String getNome() 
 	{
-		if (isARealPlayername != null)
-			return isARealPlayername;
+		if (eONomeDoJogador != null)
+			return eONomeDoJogador;
 		else
 			return "Robbet!";
 	}
 
-	public int selectTheMove(ManageMancalaBoard board) throws IOException 
+	public int selecionarMovimento(GerenciarTabuleiro tabuleiro) throws IOException 
 	{
 
-		int pitNum = 0;
-		if (isARealPlayername != null) 
+		int posicaoNum = 0;
+		if (eONomeDoJogador != null) 
 		{ 
 			/*
-			 *  The below if will check : If Human is playing or Not, isARealPlayername!=null then , ask User to provide Input else calculate Move.
+			 *  The below if will check : If Human is playing or Not, eONomeDoJogador!=null then , ask User to provide Input else calculate Move.
 			 */
-			// Real player - not the Robbet!
+			// Real jogador - not the Robbet!
 			try {
 
 
 				System.out.println(" ______________________________________________________________________________");
-				System.out.println(" Last/Recent Updated Board has been printed as above along with last user turn.");
+                                System.out.println(" A ultima jogada será exibida após o ultimo turno do jogador.");
 				System.out.println(" ______________________________________________________________________________");
-				System.out.println(" ---Who is Playing Check Below!---\n");
+				System.out.println(" ---Quem está a jogar, marque abaixo!---\n");
 				Scanner scanner = new Scanner(System.in);
-				System.out.print("<<<<<"+ isARealPlayername + ">>>>>  PLEASE ENTER A PIT TO MOVE FROM :->   "); // Prompt User Input need to be provided
+				System.out.print("<<<<<"+ eONomeDoJogador + ">>>>>  POR FAVOR INSIRA UMA POSIÇÃO PARA MOVER :->   "); // Prompt User Input need to be provided
 				scanner:
 					while(scanner.hasNext()) {
 						if(scanner.hasNextInt()){
-							pitNum = scanner.nextInt();
-							if((pitNum<=6 && pitNum>=1))  {
+							posicaoNum = scanner.nextInt();
+							if((posicaoNum<=6 && posicaoNum>=1))  {
 								break scanner;
 							} else {
 								System.out.println("******************************************************************************");
-								System.out.println("PLAYER HAS ENTERED A WRONG PIT... YOUR SELECTION SHOULD BE IN BETWEEN ( 1 TO 6 ), Please Provide correct Input Below");
+								System.out.println("O JOGADOR INSERIU UMA POSIÇÃO INCORRETA... DEVE SELECIONAR ENTRE ( 1 TO 6 ), Por favor insira um valor correto abaixo");
 								System.out.println("******************************************************************************");
-								System.out.print("<<<<<"+ isARealPlayername + ">>>>>  PLEASE ENTER A PIT TO MOVE FROM :->   "); // Prompt User Input need to be provided
+								System.out.print("<<<<<"+ eONomeDoJogador + ">>>>>  POR FAVOR INSIRA UMA POSIÇÃO PARA MOVER :->   "); // Prompt User Input need to be provided
 							}
 						} else {
 							System.out.println("******************************************************************************");
-							System.out.println("ERROR: Invalid Input... YOUR SELECTION SHOULD BE IN BETWEEN ( 1 TO 6 ) and Numeric, Information is not in the correct format");
+							System.out.println("ERROR: Entrada Inválida... DEVE SELECIONAR ENTRE ( 1 TO 6 ) e somente número, Informação está em formato incorreto");
 							System.out.println("******************************************************************************");
-							System.out.print("<<<<<"+ isARealPlayername + ">>>>>  PLEASE ENTER A PIT TO MOVE FROM :->   "); // Prompt User Input need to be provided
+							System.out.print("<<<<<"+ eONomeDoJogador + ">>>>>  POR FAVOR INSIRA UMA POSIÇÃO PARA MOVER :->   "); // Prompt User Input need to be provided
 							scanner.next();
 						}
 					}
 
 			} catch (NumberFormatException ex) {
-				System.err.println("Could not convert input string " + ex.getMessage()+"\n");
+				System.err.println("Não foi possivel converter " + ex.getMessage()+"\n");
 			}	
 
 			/*
 			 *  Once user Input is validated Move return to Control flow.
 			 */
-			return pitNum; 
+			return posicaoNum; 
 		}else {
 
 			// Robbet is playing - need to determine best move
-			int bestMove = -1; // No best move initially
-			int repeatMove = -1; // Or go again.
-			int maxNewStones = -1; // no move has added stones to the
+			int melhorMovimento = -1; // No best move initially
+			int repetirMovimento = -1; // Or go again.
+			int maxNovasPedras = -1; // no move has added pedras to the
 			// mancala.
 			// Trying the possible moves
-			for (pitNum = 1; pitNum <= ManageMancalaBoard.playingPits; pitNum++) 
+			for (posicaoNum = 1; posicaoNum <= GerenciarTabuleiro.jogandoPosicao; posicaoNum++) 
 			{
-				if (board.stonesInPit(mancalaPlayerNum, pitNum) != 0) 
-				{ // Only nonempty pits may be
+				if (tabuleiro.pedrasNaPosicao(jogadorOuriNum, posicaoNum) != 0) 
+				{ // Only nonempty posicao may be
 					// moved from
-					ManageMancalaBoard testBoard = board.makeACopyOfMancalaBoard(); 	  // Make a copy of the mancalaBoard
-					boolean goAgain = testBoard.doPitsTheMove(mancalaPlayerNum, pitNum); // Try the move on the mancalaBoard copy.
-					if (goAgain==true) // If move allows us to go again,
-						repeatMove = pitNum; // remember the move.
-					int newStones = testBoard.stonesInMancala(mancalaPlayerNum) - board.stonesInMancala(mancalaPlayerNum); // See how many stones this move added to our mancala.
-					if (newStones > maxNewStones) 
+					GerenciarTabuleiro testarTabuleiro = tabuleiro.fazerUmaCopiaDoTabuleiro(); 	  // Make a copy of the ouriTabuleiro
+					boolean irNovamente = testarTabuleiro.doMovimentoDePosicao(jogadorOuriNum, posicaoNum); // Try the move on the ouriTabuleiro copy.
+					if (irNovamente==true) // If move allows us to go again,
+						repetirMovimento = posicaoNum; // remember the move.
+					int novasPedras = testarTabuleiro.pedrasNoOuri(jogadorOuriNum) - tabuleiro.pedrasNoOuri(jogadorOuriNum); // See how many pedras this move added to our mancala.
+					if (novasPedras > maxNovasPedras) 
 					{ 
-						// More stones than so far?
-						maxNewStones = newStones; // Remember how many and the move.
-						bestMove = pitNum; 
+						// More pedras than so far?
+						maxNovasPedras = novasPedras; // Remember how many and the move.
+						melhorMovimento = posicaoNum; 
 					}
 				}
 			}
 
 			// Tried all possibilities, return the best one
-			if (maxNewStones > 1) // maxNewStones > 1 means a
+			if (maxNovasPedras > 1) // maxNovasPedras > 1 means a
 				// multistone capture occurred.
-				return bestMove;
-			else if (repeatMove != -1) // Barring that, use a "go
+				return melhorMovimento;
+			else if (repetirMovimento != -1) // Barring that, use a "go
 				// again".
-				return repeatMove;
+				return repetirMovimento;
 			else
-				return bestMove; // 1 or possibly 0 stones added; oh well :)!
+				return melhorMovimento; // 1 or possibly 0 pedras added; oh well :)!
 		}
 	}
 
