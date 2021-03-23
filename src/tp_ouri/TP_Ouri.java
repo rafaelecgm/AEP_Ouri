@@ -7,9 +7,10 @@ import java.util.concurrent.TimeUnit;
 
 
 
-
+/** actual player class */
 class jogadorAtual 
 {
+        
 	int jogadorAtual = 0;
 	GerenciarTabuleiro ouriTabuleiro;
 	PerfilJogador[] listaJogadoresPorNome;
