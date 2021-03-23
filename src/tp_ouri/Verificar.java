@@ -7,12 +7,13 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 public class Verificar {
-	
+	/** call rules method */
 	@Test
 	  public void chamarMetodoDeRegras() {
 	
 		  OuriRegras.exibirRegasDoJogo();
 	  }
+          /** player versus computer */
 	  @Test
 	  public void chamarJogoContraComputador() throws IOException {
 		

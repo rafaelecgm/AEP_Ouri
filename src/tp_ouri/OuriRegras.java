@@ -1,8 +1,13 @@
+/**This class show the rules to players
+* @author Rafael Aquino 
+* @version 1.01
+* @since Lança comentários
+*/
 package tp_ouri;
 
 public class OuriRegras
 {
-	
+	/** méthod to show the rules */
 	public static void exibirRegasDoJogo()
 	{
 		System.out.println("\t\t-------------------------------------");
