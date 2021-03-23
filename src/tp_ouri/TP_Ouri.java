@@ -1,4 +1,3 @@
-
 package tp_ouri;
 
 import java.io.*;
@@ -58,12 +57,10 @@ class jogadorAtual
 		}
 	}
 
-	/**
-	 * @throws IOException
-	 */
+	/** method do start the game */
 	public void jogarOuri() throws IOException 
 	{
-
+                /** method to show the field */
 		exibirTabuleiroOuri();
 		while (!ouriTabuleiro.fimDeJogo()) 
 		{
@@ -155,7 +152,7 @@ class jogadorAtual
 
 	/**
 	 * @param entradaPosicaoUtilizador
-	 * @param jogadorAtual
+	 * @param jogadorAtual  informacoes do jogador atual
 	 * @return
 	 */
 	public int doMisturarTabuleiro(int entradaPosicaoUtilizador,int jogadorAtual)

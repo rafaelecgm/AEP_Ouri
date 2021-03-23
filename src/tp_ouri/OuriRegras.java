@@ -1,15 +1,23 @@
 /**This class show the rules to players
 * @author Rafael Aquino 
 * @version 1.01
-* @since Lança comentários
+* @since 23/03/2021
 */
 package tp_ouri;
 
+/**
+ *
+ * @author Suricato
+ */
 public class OuriRegras
 {
-	/** méthod to show the rules */
-	public static void exibirRegasDoJogo()
+	
+    /**
+     *
+     */
+    public static void exibirRegasDoJogo()
 	{
+                /** method to show the rules */
 		System.out.println("\t\t-------------------------------------");
 		System.out.println("\t\t   Bem vindo ao Ouri    ");
 		System.out.println("\t\t------------------------------------");
